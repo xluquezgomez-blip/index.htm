@@ -2,52 +2,74 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JG Nails Calculadora</title>
+
 <style>
-    body {
-        font-family: Arial;
-        background-color: #ffe4ec;
-        color: #333;
-        padding: 20px;
-    }
-    .box {
-        background: white;
-        padding: 20px;
-        border-radius: 15px;
-        max-width: 400px;
-        margin: auto;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h2 {
-        text-align: center;
-        color: #ff69b4;
-    }
-    select, input {
-        width: 100%;
-        margin: 5px 0 15px;
-        padding: 8px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-    }
-    button {
-        background: #ff69b4;
-        color: white;
-        border: none;
-        padding: 10px;
-        width: 100%;
-        border-radius: 10px;
-        font-size: 16px;
-        cursor: pointer;
-    }
-    .total {
-        font-size: 20px;
-        text-align: center;
-        margin-top: 15px;
-        font-weight: bold;
-        color: #ff1493;
-    }
+body {
+    font-family: Arial;
+    background-color: #ffe4ec;
+    margin: 0;
+    padding: 10px;
+}
+
+.box {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    max-width: 400px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #ff69b4;
+}
+
+label {
+    font-size: 14px;
+}
+
+select, input {
+    width: 100%;
+    margin: 5px 0 15px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+button {
+    background: #ff69b4;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+button:hover {
+    background: #ff1493;
+}
+
+.total {
+    font-size: 22px;
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #ff1493;
+}
+
+.whatsapp {
+    background: #25D366;
+}
 </style>
 </head>
+
 <body>
 
 <div class="box">
@@ -56,11 +78,12 @@
 <label>Técnica:</label>
 <select id="tecnica">
     <option value="0">Seleccionar</option>
-    <option value="softgel">Soft Gel</option>
+    <option value="1">Soft Gel</option>
     <option value="150">Gel semipermanente</option>
     <option value="200">Rubber Gel</option>
 </select>
 
+<div id="largoBox">
 <label>Largo (solo Soft Gel):</label>
 <select id="largo">
     <option value="0">Seleccionar</option>
@@ -74,6 +97,7 @@
     <option value="400">Largo 8</option>
     <option value="430">Largo 9</option>
 </select>
+</div>
 
 <label>Decoración (precio por uña):</label>
 <select id="decoracion">
@@ -85,7 +109,7 @@
 </select>
 
 <label>¿Cuántas uñas con diseño?</label>
-<input type="number" id="unas" value="0">
+<input type="number" id="unas" value="0" max="10">
 
 <label>Tonos extra ($5 c/u):</label>
 <input type="number" id="tonos" value="0">
@@ -104,7 +128,7 @@
 </select>
 
 <label>¿Cuántas uñas retirar?</label>
-<input type="number" id="unasRetiro" value="0">
+<input type="number" id="unasRetiro" value="0" max="10">
 
 <label>Reposiciones:</label>
 <select id="repo">
@@ -114,21 +138,34 @@
 </select>
 
 <label>¿Cuántas uñas reponer?</label>
-<input type="number" id="unasRepo" value="0">
+<input type="number" id="unasRepo" value="0" max="10">
 
 <button onclick="calcular()">Calcular precio</button>
 
-<div class="total" id="resultado">$0</div>
+<div class="total" id="resultado">$0 MXN</div>
+
+<a id="whatsapp" target="_blank">
+    <button class="whatsapp">Agendar por WhatsApp</button>
+</a>
 
 </div>
 
 <script>
+document.getElementById("tecnica").addEventListener("change", function() {
+    let largoBox = document.getElementById("largoBox");
+    if (this.value == "1") {
+        largoBox.style.display = "block";
+    } else {
+        largoBox.style.display = "none";
+    }
+});
+
 function calcular() {
     let tecnica = document.getElementById("tecnica").value;
     let largo = document.getElementById("largo").value;
     let base = 0;
 
-    if (tecnica === "softgel") {
+    if (tecnica == "1") {
         base = parseInt(largo) || 0;
     } else {
         base = parseInt(tecnica) || 0;
@@ -137,7 +174,7 @@ function calcular() {
     let decoracion = parseInt(document.getElementById("decoracion").value);
     let unas = parseInt(document.getElementById("unas").value) || 0;
 
-    let tonos = parseInt(document.getElementById("tonos").value) * 5;
+    let tonos = (parseInt(document.getElementById("tonos").value) || 0) * 5;
     let forma = parseInt(document.getElementById("forma").value);
 
     let retiro = parseInt(document.getElementById("retiro").value);
@@ -154,6 +191,13 @@ function calcular() {
                 (repo * unasRepo);
 
     document.getElementById("resultado").innerText = "$" + total + " MXN";
+
+    let mensaje = "Hola, quiero agendar en JG Nails 💅.%0A" +
+                  "Total aproximado: $" + total + " MXN";
+
+    let url = "https://wa.me/526623612476?text=" + mensaje;
+
+    document.getElementById("whatsapp").href = url;
 }
 </script>
 
