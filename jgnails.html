@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>JG Nails Calculadora</title>
+<style>
+    body {
+        font-family: Arial;
+        background-color: #ffe4ec;
+        color: #333;
+        padding: 20px;
+    }
+    .box {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        max-width: 400px;
+        margin: auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+        text-align: center;
+        color: #ff69b4;
+    }
+    select, input {
+        width: 100%;
+        margin: 5px 0 15px;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+    button {
+        background: #ff69b4;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .total {
+        font-size: 20px;
+        text-align: center;
+        margin-top: 15px;
+        font-weight: bold;
+        color: #ff1493;
+    }
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>💅 JG Nails</h2>
+
+<label>Técnica:</label>
+<select id="tecnica">
+    <option value="0">Seleccionar</option>
+    <option value="softgel">Soft Gel</option>
+    <option value="150">Gel semipermanente</option>
+    <option value="200">Rubber Gel</option>
+</select>
+
+<label>Largo (solo Soft Gel):</label>
+<select id="largo">
+    <option value="0">Seleccionar</option>
+    <option value="180">Largo 1</option>
+    <option value="200">Largo 2</option>
+    <option value="230">Largo 3</option>
+    <option value="250">Largo 4</option>
+    <option value="300">Largo 5</option>
+    <option value="320">Largo 6</option>
+    <option value="350">Largo 7</option>
+    <option value="400">Largo 8</option>
+    <option value="430">Largo 9</option>
+</select>
+
+<label>Decoración (precio por uña):</label>
+<select id="decoracion">
+    <option value="0">Sin decoración</option>
+    <option value="5">Efectos ($5)</option>
+    <option value="15">Diseño medio ($15)</option>
+    <option value="30">Cristales M ($30)</option>
+    <option value="50">Cristal completo ($50+)</option>
+</select>
+
+<label>¿Cuántas uñas con diseño?</label>
+<input type="number" id="unas" value="0">
+
+<label>Tonos extra ($5 c/u):</label>
+<input type="number" id="tonos" value="0">
+
+<label>Cambio de forma ($20):</label>
+<select id="forma">
+    <option value="0">No</option>
+    <option value="20">Sí</option>
+</select>
+
+<label>Retiro:</label>
+<select id="retiro">
+    <option value="0">No</option>
+    <option value="10">Acrílico ($10 c/u)</option>
+    <option value="8">Gel ($8 c/u)</option>
+</select>
+
+<label>¿Cuántas uñas retirar?</label>
+<input type="number" id="unasRetiro" value="0">
+
+<label>Reposiciones:</label>
+<select id="repo">
+    <option value="0">No</option>
+    <option value="30">Acrílico ($30 c/u)</option>
+    <option value="20">Gel ($20 c/u)</option>
+</select>
+
+<label>¿Cuántas uñas reponer?</label>
+<input type="number" id="unasRepo" value="0">
+
+<button onclick="calcular()">Calcular precio</button>
+
+<div class="total" id="resultado">$0</div>
+
+</div>
+
+<script>
+function calcular() {
+    let tecnica = document.getElementById("tecnica").value;
+    let largo = document.getElementById("largo").value;
+    let base = 0;
+
+    if (tecnica === "softgel") {
+        base = parseInt(largo) || 0;
+    } else {
+        base = parseInt(tecnica) || 0;
+    }
+
+    let decoracion = parseInt(document.getElementById("decoracion").value);
+    let unas = parseInt(document.getElementById("unas").value) || 0;
+
+    let tonos = parseInt(document.getElementById("tonos").value) * 5;
+    let forma = parseInt(document.getElementById("forma").value);
+
+    let retiro = parseInt(document.getElementById("retiro").value);
+    let unasRetiro = parseInt(document.getElementById("unasRetiro").value) || 0;
+
+    let repo = parseInt(document.getElementById("repo").value);
+    let unasRepo = parseInt(document.getElementById("unasRepo").value) || 0;
+
+    let total = base +
+                (decoracion * unas) +
+                tonos +
+                forma +
+                (retiro * unasRetiro) +
+                (repo * unasRepo);
+
+    document.getElementById("resultado").innerText = "$" + total + " MXN";
+}
+</script>
+
+</body>
+</html>
